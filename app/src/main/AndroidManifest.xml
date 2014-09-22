@@ -69,7 +69,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="geo" />
-                <category android:name="android.intent.category.DEFAULTerwer" />
+                <category android:name="android.intent.category.DEFAUL12312" />
             </intent-filter>
         </activity>
 
