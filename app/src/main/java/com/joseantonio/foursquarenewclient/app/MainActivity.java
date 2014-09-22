@@ -133,9 +133,9 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         //Inicializo la selection a -1,como inicio de la app,para que muestre si pulso el refresh todas las categorias:
         selection = -1;
 
-        // load slide menu items
+        // load slide menu items(aqui cargamos los títulos de las categorías):
         navMenuTitles = getResources().getStringArray(R.array.Places);
-        // nav drawer icons from resources
+        // nav drawer icons from resources(Aquí cargamos los iconos de las categorías)
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         //Creamos el drawer layout y el listview que saldrá de la parte izquierda:
