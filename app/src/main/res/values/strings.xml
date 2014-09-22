@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Nombre de la app -->
+    <string name="app_name">FoursquareNewClient</string>
+
+    <!--Other-->
+    <string name="txtlink">register in FourSquare&lt;a href="https://es.foursquare.com/">Google&lt;/a></string>
+
+    <!-- Action bar -->
+    <string name="information">Information</string>
+    <string name="map">Map</string>
+    <string name="refresh">Refresh</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">searchable</string>
+
+    <!-- API del mapa -->
+    <string name="maps_api_key">AIzaSyA3JTnfypAn0BKrMPLiMT90KwpttTcRZfg</string>
+
+    <!-- Array de ítems del navigation drawer -->
+    <string-array name="Places">
+        <item>Food</item>
+        <item>Drinks</item>
+        <item>Coffee</item>
+        <item>Shops</item>
+        <item>Arts</item>
+        <item>Outdoors</item>
+        <item>Sights</item>
+        <item>Trending</item>
+        <item>NextVenues</item>
+        <item>TopPicks</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/food</item>
+        <item>@drawable/drinks</item>
+        <item>@drawable/cofee</item>
+        <item>@drawable/shopping</item>
+        <item>@drawable/arts</item>
+        <item>@drawable/outdoors</item>
+        <item>@drawable/sights</item>
+    </array>
+
+    <string name="title_activity_activity_list">ActivityList</string>
+    <string name="title_activity_activity_detail">ActivityDetail</string>
+    <string name="title_activity_login">Login</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

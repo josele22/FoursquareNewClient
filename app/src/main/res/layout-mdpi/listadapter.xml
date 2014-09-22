@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:background="@drawable/background_listview"
+    tools:context="com.joseantonio.foursquarenewclient.app.MainActivity$PlaceholderFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/imageView" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="128dp"
+        android:background="@drawable/black_gradient"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="1dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:id="@+id/txtnombre"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:id="@+id/txtcategory"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/txtnombre"
+            android:layout_alignLeft="@+id/txtnombre"
+            android:layout_alignStart="@+id/txtnombre"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/editText1"
+            android:layout_alignTop="@+id/txtnombre"
+            android:layout_toRightOf="@+id/txtdirection"
+            android:layout_marginLeft="25dp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/editText2"
+            android:layout_alignTop="@+id/txtcategory"
+            android:layout_alignLeft="@+id/editText1"
+            android:layout_alignStart="@+id/editText1"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Direction:"
+            android:id="@+id/txtdirection"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/txtcategory"
+            android:layout_alignLeft="@+id/txtcategory"
+            android:layout_alignStart="@+id/txtcategory"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/editText3"
+            android:layout_alignTop="@+id/txtdirection"
+            android:layout_alignLeft="@+id/editText2"
+            android:layout_alignStart="@+id/editText2"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/imageView2"
+            android:layout_marginTop="45dp"
+            android:layout_toEndOf="@id/editText3"
+            android:layout_marginLeft="4dp"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

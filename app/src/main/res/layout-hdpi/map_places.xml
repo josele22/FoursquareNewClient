@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/places_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="46dp"
+        android:clickable="true"
+        android:apiKey="AIzaSyAwsVdPxtjwHxmbujPD9cN4DatgtB4d2W4" />
+
+    <View
+        android:alpha="0.4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewBackground"
+        android:background="@color/Black"
+        android:layout_marginTop="46dp">
+    </View>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switchmove2"
+        android:layout_marginRight="200dp"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move the map:"
+        android:id="@+id/txtmove"
+        android:textColor="@color/Gray"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="385dp"
+        android:layout_above="@+id/switchmove"
+        android:layout_alignLeft="@+id/switchmove"
+        android:layout_alignStart="@+id/switchmove" />
+
+</RelativeLayout>
