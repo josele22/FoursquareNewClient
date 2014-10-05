@@ -9,15 +9,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import com.joseantonio.foursquarenewclient.app.fragments.FragmentProfile;
-import com.joseantonio.foursquarenewclient.app.rest.Profiles.Profiles;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,7 +62,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private int selection;
     private ProgressBar progress;
     private SearchView searchView;
-    private TextView logout;
+    private TextView share;
     private dateUsers register;
     private Users user;
 
@@ -75,40 +72,28 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private TypedArray navMenuIcons;
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter NavAdapter;//Esto pintará los correspondiente al nav drawer
-    private TextView name;
-    private TextView email;
-    private Profiles profilesSelected;
-    public static Login log;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        register = new dateUsers(getApplicationContext());
-        user = new Users();
-
-        try {
-            Log.d("Login", "Pasa por el try del MainActivity");
-            user = register.recuperarCONTACTO();
-            if (user.getLogin() == null || user.getLogin().equals("no")) {
-                register.insertarCONTACTO("no");
-                Log.d("Login", "Login al entrar " + user.getLogin());
-                this.finish();
-                login();
-            }
-        }catch (Exception e) {
-            Log.d("Login", "Pasa por el catch del MainActivity");
-
-            if (user.getLogin() == null || user.getLogin().equals("no")) {
-                register.insertarCONTACTO("no");
-                Log.d("Login", "Login al entrar " + user.getLogin());
-                this.finish();
-                login();
-            }
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Clase que permite sacar la latitud y longitud
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        //Pretender darte la mejor localización:
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        locationManager.requestLocationUpdates(provider, 30000, 0, this);
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        //Si la localización no es nula,le pasamos los parámetros de la localización al método
+        //para sacar la latitud y longitud:
+        if (location != null) {
+            onLocationChanged(location);
+        }
 
         //Llamamos al método para inicializar las llamadas:
         initPlacesCallback();
@@ -119,11 +104,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         //Enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Instanciamos y creamos los fragments correspondientes:
+        //Instanciamos y creamos los fragments correspondientes(ListFragment y MapPlaces):
         ArrayList<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new ListFragment());
         fragments.add(new MapPlaces());
-        fragments.add(new FragmentProfile());
 
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progress.setVisibility(View.INVISIBLE);
@@ -142,24 +126,28 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
+
         //Añadimos un LinearLayout en el footer del listview del navigation drawer,con el botón de desloguearse:
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.footer_listview, drawerList, false);
         drawerList.addFooterView(footer, null, false);
 
-        logout = (TextView) findViewById(R.id.txtlogout);
+
+        //Botón para compartir la app en el footerView:
+        share = (TextView) findViewById(R.id.txtshare);
         //Listener sobre el botón de logout:
-        logout.setOnClickListener(new View.OnClickListener() {
+        share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                register.modificarCONTACTOsi("no");
-                user = register.recuperarCONTACTO();
-                Intent intent = new Intent(MainActivity.this,Login.class);
-                startActivity(intent);
-                finish();
-                Log.d("Login", "Deslogueo a " + user.getLogin());
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Bajate la app FourSquareNewClient, https://play.google.com/store/apps/details?id=com.joseantonio.foursquarenewclient.app";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "FourSquareNewClient");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
+
 
 
         //Create ArrayList items:
@@ -203,6 +191,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                 invalidateOptionsMenu();
             }
         };
+
+
+
+        Log.d("ConsultOK", "Localización coordenadas antes de entrar al PRINCIPIO DE CARGA: " + lat + "" + lon);
 
 
         //Listener de cada uno de los items del Listview del navigation,cuando pulsamos en cada uno de ellos:
@@ -375,7 +367,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         //Establecemos la escucha del evento(para pasarle)al layout del navigation(las vistas):
         drawerLayout.setDrawerListener(drawerToggle);
 
-        //Instanciamos el Adaptador de páginas o fragments:
+        //Instanciamos el Adaptador de páginas o fragments(será quien gestione los fragments):
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
 
         //Establecemos el viewPager(gesto de fragments) en el adapter:
@@ -388,30 +380,62 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
         mIndicator.setViewPager(mViewPager);
 
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        //Conseguimos la latitud y longitud lanzada por la activity login:
+
+
+        //Lista que carga al principio:
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            try {
+                progress.setVisibility(View.VISIBLE);
+                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                restClient.explore_place(lat, lon, "1", "food", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                Log.d("ConsultOK", "Comprobación de coordenadas" + lat + "" + lon);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(MainActivity.this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }//FIN DEL ONCREATE
 
-
-    public void login()
-    {
-        Intent intent = new Intent(MainActivity.this, Login.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        locationManager.requestLocationUpdates(provider, 30000, 0, this);
-        Location location = locationManager.getLastKnownLocation(provider);
+    }
 
-        if (location != null) {
-            onLocationChanged(location);
-        }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        lat= String.valueOf(location.getLatitude());
+        lon= String.valueOf(location.getLongitude());
+
+        Log.d("ConsultOK","Localización: "+lat+","+lon);
+
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 
     @Override
@@ -567,26 +591,10 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
 
     @Override
-    public void onLocationChanged(Location location) {
-           lat= String.valueOf(location.getLatitude());
-           lon= String.valueOf(location.getLongitude());
-
-           Log.d("ConsultOK","Localización: "+lat+","+lon);
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
+    public void onDestroy()
+    {
+        super.onDestroy();
+       //Aquí desactivaremos el GPS automáticamente:
     }
 
 }

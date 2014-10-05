@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:layout_gravity="center"
         android:background="@drawable/logo_app"/>
 
@@ -19,66 +19,18 @@
         android:layout_gravity="center"
         android:background="@drawable/logo_app2"/>
 
-    <TextView
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name:"
-        android:textSize="16dp"
-        android:textColor="@color/Black"
-        android:textStyle="bold"
-        android:id="@+id/TextView1"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"/>
-
-    <EditText
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:singleLine="true"
-        android:inputType="text"
-        android:id="@+id/txtnombre"/>
+        android:layout_marginTop="250dp"
+        android:id="@+id/progressBar2"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="email:"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:textColor="@color/Black"
-        android:id="@+id/TextView2"
-        android:layout_marginTop="35dp"
-        android:layout_gravity="center"/>
-
-    <EditText
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:singleLine="true"
-        android:inputType="text"
-        android:id="@+id/txtmail"/>
-
-    <Button
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:paddingBottom="20dp"
-        android:id="@+id/btnlogin"
-        android:textSize="18dp"
-        android:paddingTop="18dp"
-        android:background="@drawable/login"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
-        android:layout_gravity="center"
-        android:text="Login"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="35dp"
-        android:id="@+id/txtLink"
-        android:textColor="@color/Black"
-        android:linksClickable="true"
-        android:text="register in FourSquare"/>
+        android:text="Cargando"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

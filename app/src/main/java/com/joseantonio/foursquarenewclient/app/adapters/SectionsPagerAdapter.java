@@ -7,9 +7,7 @@ package com.joseantonio.foursquarenewclient.app.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
@@ -30,22 +28,20 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public int getCount() {
-        // Show 3 total pages.
-        return 3;
+    public int getCount() {//Método que devolverá el número de fragments:
+        // Show 2 total pages(ListFragment and MapPlaces)
+        return 2;
     }
 
     //Títulos de la parte de ViewIndicator en la parte superior:
     @Override
     public CharSequence getPageTitle(int position) {
-        Locale l = Locale.getDefault();
+        //Locale l = Locale.getDefault();
         switch (position) {
             case 0:
                 return "List";
             case 1:
                 return "Map";
-            case 2:
-                return "Profail";
         }
         return null;
     }
