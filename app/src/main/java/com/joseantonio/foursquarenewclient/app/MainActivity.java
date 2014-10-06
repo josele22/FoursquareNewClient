@@ -63,8 +63,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     private ProgressBar progress;
     private SearchView searchView;
     private TextView share;
-    private dateUsers register;
-    private Users user;
 
     //Used to store app title
     private CharSequence mTitle;
@@ -436,6 +434,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
     @Override
     public void onProviderDisabled(String s) {
 
+
     }
 
     @Override
@@ -587,14 +586,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
             }
         };
-    }
-
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-       //Aquí desactivaremos el GPS automáticamente:
     }
 
 }

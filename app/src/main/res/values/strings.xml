@@ -4,7 +4,7 @@
     <!-- Nombre de la app -->
     <string name="app_name">FoursquareNewClient</string>
 
-    <!--Other-->
+    <!-- Other -->
     <string name="txtlink">register in FourSquare&lt;a href="https://es.foursquare.com/">Google&lt;/a></string>
 
     <!-- Action bar -->
@@ -48,5 +48,6 @@
     <string name="title_activity_login">Login</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_fin">FinActivity</string>
 
 </resources>

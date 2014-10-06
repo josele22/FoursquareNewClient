@@ -22,6 +22,7 @@ import com.joseantonio.foursquarenewclient.app.rest.dominio.Item;
 import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 
+
 //Cada fragment puede estar suscrito al bus de eventos para poder hacer uso de la información que se vaya depositando en el bus
 
 /**
@@ -76,6 +77,7 @@ public class ListFragment extends Fragment {
         listViewItems.setAdapter(adapterlist);
         adapterlist.notifyDataSetChanged();
 
+
         for(int i =0;i<event.getDownloadedVenues().size();i++)
         {
             Log.d("retrofit", "Tamaño de lo contenido en el evento: " + ""+ event.getDownloadedVenues().size());
@@ -100,5 +102,6 @@ public class ListFragment extends Fragment {
         Log.d("retrofit", "ListFragment se desregistra del evento");
         AplicationClass.bus.unregister(this);
     }
+
 
 }

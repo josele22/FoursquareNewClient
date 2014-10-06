@@ -23,14 +23,14 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:id="@+id/progressBarhdpi"
+        android:layout_marginTop="228dp"
+        android:id="@+id/progressBarFirst"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cargando datos"
+        android:text="Cargando"
         android:id="@+id/txtcargando"
         android:layout_gravity="center_horizontal" />
 
