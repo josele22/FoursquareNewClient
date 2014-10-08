@@ -23,6 +23,7 @@ public class Login extends FragmentActivity implements LocationListener  {
     private ProgressBar progress;
     private String provider;
     private TextView cargando;
+    private TextView gps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class Login extends FragmentActivity implements LocationListener  {
 
         //Texto de cargando:
         cargando=(TextView)findViewById(R.id.txtcargando);
+        //Texto de Por favor active el GPS:
+        gps=(TextView)findViewById(R.id.txtgps);
 
         //Clase que permite sacar la latitud y longitud
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -41,7 +44,7 @@ public class Login extends FragmentActivity implements LocationListener  {
         //Pretender darte la mejor localización:
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
-        locationManager.requestLocationUpdates(provider, 30000, 0, this);
+        locationManager.requestLocationUpdates(provider, 25000, 0, this);
         Location location = locationManager.getLastKnownLocation(provider);
 
         //Si la localización no es nula,le pasamos los parámetros de la localización al método
@@ -54,7 +57,8 @@ public class Login extends FragmentActivity implements LocationListener  {
         //Comprobación de la activación del GPS:
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             progress.setVisibility(View.INVISIBLE);
-            cargando.setText("Por favor,active el GPS");
+            gps.setText("Por favor,active el GPS");
+            cargando.setText("");
         }else {
             new nextactivity1().execute();
         }
@@ -74,7 +78,7 @@ public class Login extends FragmentActivity implements LocationListener  {
         lat= String.valueOf(location.getLatitude());
         lon= String.valueOf(location.getLongitude());
 
-        Log.d("ConsultOK","Localización: "+lat+","+lon);
+        Log.d("ConsultOK","Localización en LOGIN: "+lat+","+lon);
     }
 
     @Override
@@ -84,7 +88,7 @@ public class Login extends FragmentActivity implements LocationListener  {
 
     @Override
     public void onProviderEnabled(String s) {
-       new nextactivity1().execute();
+        new nextactivity1().execute();
     }
 
     @Override
@@ -100,30 +104,35 @@ public class Login extends FragmentActivity implements LocationListener  {
         protected void onPreExecute() {
             progress.setVisibility(View.VISIBLE);
             cargando.setText("Cargando");
+            gps.setText("");
         }
 
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                Thread.sleep(2500);
-
-                // Start the next activity
-                Intent mainIntent = new Intent().setClass(Login.this, MainActivity.class);
-                startActivity(mainIntent);
-
-                // Close the activity so the user won't able to go back this
-                // activity pressing Back button
-                finish();
-
+                Thread.sleep(5500);
             } catch(InterruptedException e) {}
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
+
             locationManager.removeUpdates(Login.this);//Elimino la actualización
-            //continua de posiciones GPS
+
+            // Start the next activity
+            Intent mainIntent = new Intent().setClass(Login.this, MainActivity.class);
+            startActivity(mainIntent);
+
+            // Close the activity so the user won't able to go back this
+            // activity pressing Back button
+            finish();
+
+
+
+
+            //continua de las últimas posiciones GPS
         }
     }
 

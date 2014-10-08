@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         //Pretender darte la mejor localización:
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
-        locationManager.requestLocationUpdates(provider, 30000, 0, this);
+        locationManager.requestLocationUpdates(provider, 25000, 0, this);
         Location location = locationManager.getLastKnownLocation(provider);
 
         //Si la localización no es nula,le pasamos los parámetros de la localización al método
@@ -237,7 +237,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                                     "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
 
 
-                            Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
+                            Log.d("ConsultOK", "Localización MAIN: " + lat + "" + lon);
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -379,15 +379,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         mIndicator.setViewPager(mViewPager);
 
 
-        //Conseguimos la latitud y longitud lanzada por la activity login:
-
-
-        //Lista que carga al principio:
+        //Conseguimos la latitud y longitud:
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             try {
                 progress.setVisibility(View.VISIBLE);
                 //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                restClient.explore_place(lat, lon, "1", "food", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                restClient.explore_all(lat, lon, "1", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
                         "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
 
                 Log.d("ConsultOK", "Comprobación de coordenadas" + lat + "" + lon);
@@ -399,15 +396,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             Toast.makeText(MainActivity.this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
         }
 
-
-
     }//FIN DEL ONCREATE
 
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
 
@@ -587,5 +581,6 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             }
         };
     }
+
 
 }

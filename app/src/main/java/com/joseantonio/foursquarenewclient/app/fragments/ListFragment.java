@@ -101,6 +101,9 @@ public class ListFragment extends Fragment {
         super.onDestroy();
         Log.d("retrofit", "ListFragment se desregistra del evento");
         AplicationClass.bus.unregister(this);
+
+
+
     }
 
 

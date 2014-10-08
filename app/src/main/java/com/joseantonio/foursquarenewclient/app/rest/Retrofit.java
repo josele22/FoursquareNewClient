@@ -18,6 +18,18 @@ public interface Retrofit {
     //https://api.foursquare.com/v2/venues/explore?ll=40.7,-74&venuePhotos=1&client_id=A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F&client_secret=XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S&v=20140512
     //Petición sacar todos los lugares próximos,sean de la categoría que sean:
 
+    //Lista general:
+    //Consulta para sacar todos los sitios,pasándole en sección según sea comida,bebidas...etc:
+    @GET("/venues/explore")
+    public void search_general(@Query("ll") String latLng,
+                           @Query("venuePhotos") String photo,
+                           @Query("client_id") String clientId,
+                           @Query("client_secret") String clientSecret,
+                           @Query("v") String date,
+                           Callback<Places> callback); //En este caso devolveremos objetos de tipo Places
+
+
+
     //Consulta para sacar todos los sitios,pasándole en sección según sea comida,bebidas...etc:
     @GET("/venues/explore")
          public void search_pub(@Query("ll") String latLng,

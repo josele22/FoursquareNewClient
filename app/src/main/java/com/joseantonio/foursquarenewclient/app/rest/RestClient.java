@@ -27,6 +27,11 @@ public class RestClient {
         retrofit = restAdapter.create(Retrofit.class);
     }
 
+    //Este método sacará lugares(comida,bebida...etc):
+    public void explore_all(String lat,String lon,String photo,String client_id,String client_secret,String v, Callback<Places>callback) throws IOException {
+        retrofit.search_general(lat + "," + lon, photo,client_id, client_secret, v, callback);
+    }
+
     //Este método sacará los lugares cuya categoría sea gastroPub:
     public void explore_place(String lat,String lon,String photo,String type,String client_id,String client_secret,String v, Callback<Places>callback) throws IOException {
         retrofit.search_pub(lat + "," + lon, photo, type, client_id, client_secret, v, callback);

@@ -190,7 +190,7 @@ public class MapPlaces extends Fragment {
 
         if(metrics.density==3.0)//XXDPI
         {
-            Picasso.with(getActivity()).load(url).resize(90,90).into(target);
+            Picasso.with(getActivity()).load(url).resize(80,80).into(target);
         }
 
 
