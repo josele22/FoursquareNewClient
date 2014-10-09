@@ -86,13 +86,6 @@
             android:layout_alignStart="@+id/editText2list"
             android:textColor="@android:color/white"/>
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:id="@+id/imageView2"
-            android:layout_marginTop="45dp"
-            android:layout_toEndOf="@id/editText3"
-            android:layout_marginLeft="4dp"/>
 
     </RelativeLayout>
 

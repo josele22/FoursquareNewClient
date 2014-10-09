@@ -2,43 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="40dp"
     android:orientation="horizontal"
     android:background="@color/blue_list_nav_drawer">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_gravity="start" >
-
-        <ImageView
-            android:id="@+id/icon2"
-            android:layout_width="25dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:src="@drawable/food"
-            android:layout_centerVertical="true" />
-
-        <TextView
-            android:id="@+id/title2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/icon"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:gravity="center_vertical"
-            android:textColor="@color/White"
-            android:paddingRight="40dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="#000000">
 
         <ImageView
             android:id="@+id/icon"
@@ -47,19 +18,21 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
             android:src="@drawable/food"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="4dp"
             android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/icon"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:textColor="@color/White"
+            android:textSize="13dp"
             android:paddingRight="40dp"/>
 
     </LinearLayout>

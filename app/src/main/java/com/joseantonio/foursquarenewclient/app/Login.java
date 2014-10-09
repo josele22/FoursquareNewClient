@@ -72,6 +72,13 @@ public class Login extends FragmentActivity implements LocationListener  {
         super.onResume();
     }
 
+    //Eliminamos la actualización de posiciones:
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
+    }
+
 
     @Override
     public void onLocationChanged(Location location) {
@@ -79,6 +86,7 @@ public class Login extends FragmentActivity implements LocationListener  {
         lon= String.valueOf(location.getLongitude());
 
         Log.d("ConsultOK","Localización en LOGIN: "+lat+","+lon);
+
     }
 
     @Override
@@ -94,7 +102,6 @@ public class Login extends FragmentActivity implements LocationListener  {
     @Override
     public void onProviderDisabled(String s) {
     }
-
 
 
     //Ejecución en segundo plano:
@@ -119,18 +126,14 @@ public class Login extends FragmentActivity implements LocationListener  {
         @Override
         protected void onPostExecute(Boolean result) {
 
-            locationManager.removeUpdates(Login.this);//Elimino la actualización
-
             // Start the next activity
             Intent mainIntent = new Intent().setClass(Login.this, MainActivity.class);
             startActivity(mainIntent);
 
+
             // Close the activity so the user won't able to go back this
             // activity pressing Back button
             finish();
-
-
-
 
             //continua de las últimas posiciones GPS
         }

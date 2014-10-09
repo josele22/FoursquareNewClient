@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -62,12 +60,14 @@ public class MapPlaces extends Fragment {
 
         Log.d("ConsultOK", "Infla la vista...");
 
+
         //Creamos el mapa,haciendo uso de la librería Support(y haciendo referencia en el layout map_places):
         map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.places_map)).getMap();
         settings=map.getUiSettings();//Guardamos en una variable las opciones que tendrá el mapa:
         settings.setScrollGesturesEnabled(false);
         settings.setZoomControlsEnabled(false);
         settings.setZoomGesturesEnabled(false);
+
 
         //Switch que activará o desactivará las opciones que le digamos:
         movemap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -98,6 +98,7 @@ public class MapPlaces extends Fragment {
                 }
             }
         });
+
 
          return v;
      }//Fin del oncreateView

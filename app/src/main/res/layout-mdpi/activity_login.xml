@@ -14,8 +14,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:scaleX="0.9"
-            android:scaleY="0.9"
             android:background="@drawable/logo_app"
             android:id="@+id/letterfoursquare" />
 

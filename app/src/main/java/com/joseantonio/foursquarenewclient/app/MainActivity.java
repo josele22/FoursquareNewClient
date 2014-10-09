@@ -8,6 +8,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -78,26 +79,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Clase que permite sacar la latitud y longitud
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-
-        //Pretender darte la mejor localización:
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        locationManager.requestLocationUpdates(provider, 25000, 0, this);
-        Location location = locationManager.getLastKnownLocation(provider);
-
-        //Si la localización no es nula,le pasamos los parámetros de la localización al método
-        //para sacar la latitud y longitud:
-        if (location != null) {
-            onLocationChanged(location);
-        }
-
         //Llamamos al método para inicializar las llamadas:
         initPlacesCallback();
 
         //Instanciamos un objeto de la clase RestCLient:
         restClient = new RestClient();
+
 
         //Enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,6 +96,12 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progress.setVisibility(View.INVISIBLE);
+
+        //Llamamos al método para conseguir la localización:
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        //Ejecutamos el hilo:
+        new testGPS().execute();
 
         mTitle = getTitle();
 
@@ -158,11 +151,11 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         // Tapas restaurant:
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Café:
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
         // Historic site:
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // Mall:
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
         //Stadium soccer:
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
 
@@ -190,10 +183,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
             }
         };
 
-
-
         Log.d("ConsultOK", "Localización coordenadas antes de entrar al PRINCIPIO DE CARGA: " + lat + "" + lon);
-
 
         //Listener de cada uno de los items del Listview del navigation,cuando pulsamos en cada uno de ellos:
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -209,12 +199,22 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "food", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
 
-                            Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
+                            }else{
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "food", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+
+                                selection=0;
+
+                                Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
+                            }
+
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -231,11 +231,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "drinks", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
 
+                            }else {
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "drinks", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                                selection=1;
+                            }
 
                             Log.d("ConsultOK", "Localización MAIN: " + lat + "" + lon);
 
@@ -254,11 +261,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "coffee", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140520", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
 
+                            }else {
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "coffee", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140520", callback);
+
+
+                                selection=2;
+                            }
 
                             Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
 
@@ -276,10 +291,19 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "shops", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
+
+                            }else{
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "shops", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                                selection=3;
+
+                            }
 
 
                             Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
@@ -298,11 +322,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "arts", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
 
+                            }else {
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "arts", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                                selection=4;
+                            }
 
                             Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
 
@@ -320,11 +351,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "outdoors", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
 
+                            }else {
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "outdoors", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                                selection=5;
+                            }
 
                             Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
 
@@ -342,11 +380,18 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
 
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
-                            progress.setVisibility(View.VISIBLE);
-                            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                            restClient.explore_place(lat, lon, "1", "sights", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+                            if(lat==null && lon==null)
+                            {
+                                Toast.makeText(getApplicationContext(),"Fallo en el GPS,coloquese en un sitio libre de interferencias",Toast.LENGTH_LONG).show();
 
+                            }else {
+                                progress.setVisibility(View.VISIBLE);
+                                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+                                restClient.explore_place(lat, lon, "1", "sights", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                                selection=6;
+                            }
 
                             Log.d("ConsultOK", "Localización coordenadas: " + lat + "" + lon);
 
@@ -379,29 +424,60 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
         mIndicator.setViewPager(mViewPager);
 
 
-        //Conseguimos la latitud y longitud:
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            try {
-                progress.setVisibility(View.VISIBLE);
-                //Le pasamos los parámetros correspondientes,en este caso GastroPub:
-                restClient.explore_all(lat, lon, "1", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
-                        "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+    }//FIN DEL ONCREATE
 
-                Log.d("ConsultOK", "Comprobación de coordenadas" + lat + "" + lon);
+
+    //Ejecución en segundo plano:
+    private class testGPS extends AsyncTask<Void, Integer, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            progress.setVisibility(View.VISIBLE);
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                Thread.sleep(1000);
+            } catch(InterruptedException e) {}
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+
+            //Le pasamos los parámetros correspondientes,en este caso GastroPub:
+            try {
+                    restClient.explore_all(lat, lon, "1", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                            "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            Toast.makeText(MainActivity.this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
-        }
 
-    }//FIN DEL ONCREATE
+            Log.d("ConsultOK", "Comprobación de coordenadas" + lat + "" + lon);
+        }
+    }
 
 
     @Override
     public void onResume() {
         super.onResume();
+
+        //Pretender darte la mejor localización:
+        Criteria criteria = new Criteria();
+
+        provider = locationManager.getBestProvider(criteria, false);
+        locationManager.requestLocationUpdates(provider, 25000, 0, this);
+        final Location location = locationManager.getLastKnownLocation(provider);
+
+        //Si la localización no es nula,le pasamos los parámetros de la localización al método
+        //para sacar la latitud y longitud:
+        if (location != null) {
+            onLocationChanged(location);
+        }
     }
 
 
@@ -484,6 +560,7 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                 {
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         try {
+                            progress.setVisibility(View.VISIBLE);
                             //Le pasamos los parámetros correspondientes:
                             restClient.explore_place(lat, lon, "1", "food", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
                                     "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
@@ -497,9 +574,129 @@ public class MainActivity extends ActionBarActivity implements LocationListener 
                         Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
                     }
                 }
+
+                if(selection==1)
+                {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        try {
+                            progress.setVisibility(View.VISIBLE);
+                            //Le pasamos los parámetros correspondientes:
+                            restClient.explore_place(lat, lon, "1", "drinks", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                            Log.d("ConsultOK","Localización coordenadas: "+lat+""+lon);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+                if(selection==2)
+                {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        try {
+                            progress.setVisibility(View.VISIBLE);
+                            //Le pasamos los parámetros correspondientes:
+                            restClient.explore_place(lat, lon, "1", "coffee", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                            Log.d("ConsultOK","Localización coordenadas: "+lat+""+lon);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if(selection==3)
+                {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        try {
+                            progress.setVisibility(View.VISIBLE);
+                            //Le pasamos los parámetros correspondientes:
+                            restClient.explore_place(lat, lon, "1", "shops", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                            Log.d("ConsultOK","Localización coordenadas: "+lat+""+lon);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if(selection==4)
+                {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        try {
+                            progress.setVisibility(View.VISIBLE);
+                            //Le pasamos los parámetros correspondientes:
+                            restClient.explore_place(lat, lon, "1", "arts", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                            Log.d("ConsultOK","Localización coordenadas: "+lat+""+lon);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+                if(selection==5)
+                {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        try {
+                            progress.setVisibility(View.VISIBLE);
+                            //Le pasamos los parámetros correspondientes:
+                            restClient.explore_place(lat, lon, "1", "outdoors", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                            Log.d("ConsultOK","Localización coordenadas: "+lat+""+lon);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                if(selection==6)
+                {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        try {
+                            progress.setVisibility(View.VISIBLE);
+                            //Le pasamos los parámetros correspondientes:
+                            restClient.explore_place(lat, lon, "1", "sights", "A2JLH23PAQX0WRSKCAAJENRWNRB13GZ5MA5DJYRJNTSBTA0F",
+                                    "XJRLPT114VH4T0IE1LGF0R44WRRNXKSOIUDIU0UBKHPEFN3S", "20140512", callback);
+
+                            Log.d("ConsultOK","Localización coordenadas: "+lat+""+lon);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        Toast.makeText(this, "Activa el GPS!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+
+
+
                 break;
-            default:
-                break;
+
         }
 
         //En el caso de que pulsemos en el icono del navigation drawer(3 rayas)para abrir el navigationdrawer:

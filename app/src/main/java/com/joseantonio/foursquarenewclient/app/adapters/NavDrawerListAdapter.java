@@ -1,10 +1,7 @@
 package com.joseantonio.foursquarenewclient.app.adapters;
-
-
 /*Clase que contiene el adapter correspondiente que recibe los datos y que pinta
- los items con su título y su icono:
- */
-
+los items con su título y su icono:
+*/
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,12 +13,10 @@ import android.widget.TextView;
 import com.joseantonio.foursquarenewclient.app.NavDrawerItem;
 import com.joseantonio.foursquarenewclient.app.R;
 import java.util.ArrayList;
-
 /**
  * Created by josetorres on 16/05/14.
  */
 public class NavDrawerListAdapter extends BaseAdapter {
-
     private Context context;
     private ArrayList<NavDrawerItem> navDrawerItems;
 
@@ -29,7 +24,6 @@ public class NavDrawerListAdapter extends BaseAdapter {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
     }
-
     @Override
     public int getCount() {
         return navDrawerItems.size();
@@ -60,5 +54,4 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }

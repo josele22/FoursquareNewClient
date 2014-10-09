@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name:"
-            android:id="@+id/txtnombre"
+            android:id="@+id/txtnombrelist"
             android:layout_marginTop="15dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -38,20 +38,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Category"
-            android:id="@+id/txtcategory"
+            android:id="@+id/txtcategorylist"
             android:layout_marginTop="13dp"
-            android:layout_below="@+id/txtnombre"
-            android:layout_alignLeft="@+id/txtnombre"
-            android:layout_alignStart="@+id/txtnombre"
+            android:layout_below="@+id/txtnombrelist"
+            android:layout_alignLeft="@+id/txtnombrelist"
+            android:layout_alignStart="@+id/txtnombrelist"
             android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/editText1"
-            android:layout_alignTop="@+id/txtnombre"
-            android:layout_toRightOf="@+id/txtdirection"
+            android:id="@+id/editText1list"
+            android:layout_alignTop="@+id/txtnombrelist"
+            android:layout_toRightOf="@+id/txtdirectionlist"
             android:layout_marginLeft="25dp"
             android:textColor="@android:color/white"/>
 
@@ -59,40 +59,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/editText2"
-            android:layout_alignTop="@+id/txtcategory"
-            android:layout_alignLeft="@+id/editText1"
-            android:layout_alignStart="@+id/editText1"
+            android:id="@+id/editText2list"
+            android:layout_alignTop="@+id/txtcategorylist"
+            android:layout_alignLeft="@+id/editText1list"
+            android:layout_alignStart="@+id/editText1list"
             android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Direction:"
-            android:id="@+id/txtdirection"
+            android:id="@+id/txtdirectionlist"
             android:layout_marginTop="13dp"
-            android:layout_below="@+id/txtcategory"
-            android:layout_alignLeft="@+id/txtcategory"
-            android:layout_alignStart="@+id/txtcategory"
+            android:layout_below="@+id/txtcategorylist"
+            android:layout_alignLeft="@+id/txtcategorylist"
+            android:layout_alignStart="@+id/txtcategorylist"
             android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/editText3"
-            android:layout_alignTop="@+id/txtdirection"
-            android:layout_alignLeft="@+id/editText2"
-            android:layout_alignStart="@+id/editText2"
+            android:id="@+id/editText3list"
+            android:layout_alignTop="@+id/txtdirectionlist"
+            android:layout_alignLeft="@+id/editText2list"
+            android:layout_alignStart="@+id/editText2list"
             android:textColor="@android:color/white"/>
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:id="@+id/imageView2"
-            android:layout_marginTop="45dp"
-            android:layout_toEndOf="@id/editText3"
-            android:layout_marginLeft="4dp"/>
 
     </RelativeLayout>
 
